@@ -49,6 +49,13 @@ class StepCounterService {
 
   int get stepCount => _stepCount;
 
+  void reset() {
+    _stepCount = 0;
+    _initialStepCount = 0;
+    _totalDistance = 0.0;
+    _lastPosition = null;
+  }
+
   void dispose() {
     _stepCountSubscription.cancel();
   }

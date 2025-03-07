@@ -11,18 +11,27 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final StepCounterService _stepCounterService = StepCounterService();
+  bool _isServiceRunning = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _stepCounterService.initStepCounter(() {
-      setState(() {});
+  void _toggleService() {
+    if (_isServiceRunning) {
+      _stepCounterService.dispose();
+      _stepCounterService.reset();
+    } else {
+      _stepCounterService.initStepCounter(() {
+        setState(() {});
+      });
+    }
+    setState(() {
+      _isServiceRunning = !_isServiceRunning;
     });
   }
 
   @override
   void dispose() {
-    _stepCounterService.dispose();
+    if (_isServiceRunning) {
+      _stepCounterService.dispose();
+    }
     super.dispose();
   }
 
@@ -38,7 +47,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Map Near Me'),
+          title: const Text('Routes Near Me'),
           elevation: 2,
         ),
         body: Column(
@@ -53,6 +62,10 @@ class _MyAppState extends State<MyApp> {
                   Text('Steps: ${_stepCounterService.stepCount}'),
                   Text('Distance: ${_stepCounterService.totalDistance.toStringAsFixed(2)} km'),
                   Text('Speed: ${averageSpeed.toStringAsFixed(2)} km/h'),
+                  ElevatedButton(
+                    onPressed: _toggleService,
+                    child: Text(_isServiceRunning ? 'Stop' : 'Start'),
+                  ),
                 ],
               ),
             ),
