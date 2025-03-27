@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:walking_tracker_app/my_app.dart';
+import 'package:walking_tracker_app/Intro.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    home: Intro(),
+  ));
 }
